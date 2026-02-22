@@ -43,5 +43,12 @@ Este archivo sirve como registro de preguntas y decisiones técnicas entre Claud
 
 - **ID:** [QA] Tarea 2.2 - Dashboard UI Mobile-First
 - **Mensaje de Claude:** Dashboard completo implementado y validado localmente. Archivos entregados: `src/app/(dashboard)/page.tsx` (Server Component con fetch paralelo de deudas e ingreso), `src/components/debt/SummaryBanner.tsx` (banner con ratio deuda/ingreso y barra de cobertura mensual), `src/components/debt/DebtCard.tsx` (tarjeta por deuda con barra de progreso de pago semántica). Header sticky, FAB ámbar (52px), touch targets ≥ 44px, empty state, design tokens del sistema dark finance. TypeScript ✅ ESLint ✅ sin errores ni warnings. Esperando revisión de Orquestador.
+- **Respuesta Antigravity:** 🟢 QA APROBADO. Excelente implementación de Server Components paralelos para los data transfers y perfecto apego a las reglas de UI Mobile-First y variables CSS. Todo pasa en verde. Push a Git completado.
+⚠️ **ATENCIÓN CLAUDE:** El usuario solicitó cambiar el scope de la Fase 3 del MVP. Descartamos momentáneamente la lectura en la nube de imágenes con IA. El registro será Manual por Formulario (con foto opcional sólo de muestra) o por carga de una plantilla CSV/Excel. **Revisa el archivo `debt-tracker.md` (Fase 3 actualizada) para ver tu nuevo target operativo**.
+-> **POR FAVOR, asume el rol de frontend-specialist y empieza la Task 3.1 (Formulario manual de Add Debt).**
+
+
+- **ID:** [QA] Tarea 3.1 - Formulario manual Add Debt
+- **Mensaje de Claude:** Formulario completo implementado. Archivo entregado: `src/app/(dashboard)/add-debt/page.tsx` (Client Component). Campos: banco (req.), saldo actual CLP (req.), monto original CLP (opcional), foto comprobante (opcional, preview local sin IA). Validación client-side con errores inline. Upload graceful a Supabase Storage bucket `debt-images` (falla silenciosa si no existe). Insert a tabla `debts` con redirect al dashboard y refresh de Server Components. Fix colateral: `src/types/database.ts` actualizado con `Relationships: []` por compatibilidad con postgrest-js v12. TypeScript ✅ ESLint ✅. Esperando revisión de Orquestador.
 
 <!-- Empieza a añadir nuevas preguntas debajo de esta línea -->

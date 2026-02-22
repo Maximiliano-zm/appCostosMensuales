@@ -26,8 +26,8 @@ export default async function DashboardPage() {
     .order("created_at", { ascending: false })
     .limit(1);
 
-  const debtList: Debt[] = debts ?? [];
-  const incomeList: Income[] = incomeRows ?? [];
+  const debtList = (debts as unknown as Debt[]) ?? [];
+  const incomeList = (incomeRows as unknown as Income[]) ?? [];
   const totalDebt = debtList.reduce((sum, d) => sum + d.current_balance, 0);
   const monthlyIncome = incomeList[0]?.monthly_amount ?? 0;
 

@@ -62,29 +62,30 @@ lib/
   - *OUTPUT*: Tablas en Supabase con políticas de privacidad RLS (el usuario solo ve su propia información).
   - *VERIFY*: Se pueden hacer INSERTS desde el panel de Supabase.
   > NOTA CLAUDE: Migración en supabase/migrations/20260221000000_initial_schema.sql. Tablas: debts (id, user_id, bank_name, current_balance, original_amount, image_url, timestamps) + income (id, user_id, monthly_amount, note, timestamps). RLS habilitado en ambas con policy "owner access only". Índices en user_id. Trigger updated_at automático. Rollback incluido (comentado). Tipos TS en src/types/database.ts. Clientes supabase.ts y supabase-browser.ts actualizados con Database generic. TypeScript ✅ ESLint ✅ dev ✅. ACCIÓN REQUERIDA DEL USUARIO: ejecutar el SQL en Supabase Dashboard → SQL Editor para crear las tablas en el proyecto real.
-- [QA] **Task 2.2**: Construir la UI del Dashboard enfocada en móviles.
+- [x] **Task 2.2**: Construir la UI del Dashboard enfocada en móviles.
   - *Agente/Skill*: `frontend-specialist`, `mobile-design`
   - *INPUT*: Diseñar un progreso visual (Deuda cubierta vs Ingreso libre) y lista de tarjetas de crédito.
   - *OUTPUT*: Interfaz atractiva y 100% responsiva (vista celular).
   - *VERIFY*: Los botones y las métricas se ven grandes y claros y siguen un contraste legible.
   > NOTA CLAUDE: Dashboard reescrito como Server Component con fetch paralelo de `debts` e `income`. Componentes: `SummaryBanner` (deuda total en rojo, ingreso en verde, ratio deuda/ingreso, barra de cobertura mensual %) y `DebtCard` (nombre banco, saldo actual, monto original, barra de progreso de pago con colores semánticos rojo/ámbar/verde). Header sticky con email + botón "Salir" (44px mínimo). FAB "Agregar Deuda" fijo abajo derecha (52px altura, ámbar). Empty state con dashed border. Todos los tokens del design system dark finance reutilizados. TypeScript ✅ ESLint ✅ sin warnings.
 
-### Fase 3: Lógica de Carga y Lectura Inteligente de Imágenes
-- [ ] **Task 3.1**: Interfaz "Add Debt" para carga de capturas de pantalla.
+### Fase 3: Registro de Datos Manual (MVP Base)
+- [QA] **Task 3.1**: Interfaz "Add Debt" simple.
+  - *Agente/Skill*: `frontend-specialist`, `mobile-design`
+  - *INPUT*: Formulario de ingreso manual para Deudas (Banco, Saldo Actual, Monto Original, Foto Opcional como comprobante visual -sin IA-).
+  - *OUTPUT*: Pantalla responsiva de captura de datos conectada a Supabase.
+  - *VERIFY*: Al presionar guardar, los datos se reflejan directo en el Dashboard.
+  > NOTA CLAUDE: Client Component `"use client"` en `src/app/(dashboard)/add-debt/page.tsx`. Campos: bank_name (req.), current_balance CLP (req.), original_amount CLP (opcional), foto comprobante (opcional, preview local vía FileReader). Validación client-side con mensajes de error inline. Upload de foto a bucket `debt-images` de Supabase Storage con fallback silencioso si el bucket no existe. Insert en tabla `debts`. Redirect a `/` + `router.refresh()` tras éxito. Loading state en botón (52px ámbar). Header sticky con botón "← Volver" (44px). Fix adicional: añadido `Relationships: []` a `src/types/database.ts` para compatibilidad con @supabase/postgrest-js v12. TypeScript ✅ ESLint ✅.
+- [ ] **Task 3.2**: Interfaz y lógica "Settings / Ingreso Mensual".
   - *Agente/Skill*: `frontend-specialist`
-  - *INPUT*: Campo input tipo "file" para cámara/galería en móviles.
-  - *OUTPUT*: Previsualización de la captura antes de procesar.
-  - *VERIFY*: La foto de la cuenta bancaria/tarjeta de crédito se inserta bien en la UI.
-- [ ] **Task 3.2**: API Route de procesado con Claude Code/Vision.
+  - *INPUT*: Pantalla simple para configurar o actualizar el 'Ingreso Mensual' del usuario.
+  - *OUTPUT*: Guardado en la tabla `income` de Supabase asociado al User ID.
+  - *VERIFY*: El Banner del Dashboard recalcula los % automáticamente.
+- [ ] **Task 3.3**: (Opcional MVP) Importador CSV/Excel básico.
   - *Agente/Skill*: `backend-specialist`
-  - *INPUT*: Convertir imagen a Base64 → Enviar a un endpoint `/api/process-receipt` donde la API de Claude lea el monto a pagar.
-  - *OUTPUT*: Un JSON retornado con `{ banco: "Santander", saldo: "300000" }`.
-  - *VERIFY*: Enviar una captura de prueba en el navegador devuelve sus datos exactos en la consola.
-- [ ] **Task 3.3**: Guardar información extraída en Supabase.
-  - *Agente/Skill*: `backend-specialist`
-  - *INPUT*: Formulario auto-completado con los datos de la IA listos para Confirmar.
-  - *OUTPUT*: El nuevo estado de deuda se inserta a la tabla, el dashboard actualiza y refleja el avance.
-  - *VERIFY*: Al volver al inicio, el número de 3.6m se actualiza y avisa de la reducción.
+  - *INPUT*: Botón en el dashboard para subir un archivo pre-formateado con las deudas (plantilla CSV).
+  - *OUTPUT*: Parseo local e inserción en batch a Supabase.
+  - *VERIFY*: Múltiples tarjetas aparecen de inmediato en el Dashboard tras la carga.
 
 ## ✅ Phase X: Verification
 - [ ] **Security**: Analizar secretos o contraseñas en código duro (`checklist.py`).
