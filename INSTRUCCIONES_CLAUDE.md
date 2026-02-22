@@ -50,4 +50,5 @@ Cuando el usuario te indique "Empieza con la Tarea X", vas a:
 2. Marcar la tarea como `[/]` y programarla.
 3. Comprobar que compila/funciona bien.
 4. Marcar la tarea como `[QA]` en `debt-tracker.md`.
-5. **DO NOT COMMUNICATE MORE:** Detenerte por completo y avisarle al usuario que marque a Antigravity Agent. Antigravity hará la revisión de QA antes de hacer *push*.
+5. **DO NOT COMMUNICATE MORE:** Detenerte por completo, escribir el reporte en `COMUNICACION_AGENTES.md` con el aviso correspondiente y decirle EXACTAMENTE al usuario la siguiente frase en la consola:
+**"Por favor notifica a Antigravity para que haga la revisión de QA."**

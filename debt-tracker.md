@@ -48,7 +48,7 @@ lib/
   - *OUTPUT*: Proyecto corriendo con Supabase conectado.
   - *VERIFY*: `npm run dev` levanta sin errores.
   > NOTA CLAUDE: Proyecto inicializado con Next.js 16.1.6, React 19, TypeScript strict, Tailwind v4, @supabase/supabase-js. Estructura de rutas y lib/ creada. Sistema de diseño dark finance (slate + ámbar, sin morado) configurado en globals.css. `npm run dev` levanta en ~624ms sin errores. Credenciales en .env.local (vacías — el usuario debe completarlas). Sin operaciones Git.
-- [QA] **Task 1.2**: Implementar Google Login con Supabase Auth.
+- [x] **Task 1.2**: Implementar Google Login con Supabase Auth.
   - *Agente/Skill*: `backend-specialist`, `api-patterns`
   - *INPUT*: Configuración de Supabase Auth en Next.js.
   - *OUTPUT*: Login bloqueando rutas privadas; desvía exitosamente a `/dashboard`.
