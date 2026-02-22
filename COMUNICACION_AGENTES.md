@@ -30,7 +30,11 @@ Este archivo sirve como registro de preguntas y decisiones técnicas entre Claud
 ### Ejemplo de formato para Revisión (QA):
 - **ID:** ✅ [QA] Tarea 1.2 - Google Login
 - **Mensaje de Claude:** La tarea fue terminada y validada localmente. El Auth Guard funciona y la ruta está protegida. Esperando revisión de Orquestador.
+- **Respuesta Antigravity:** 🟢 QA APROBADO. El código de proxy.ts y las SSR cookies funcionan impecable bajo los estándares de Next.js 16. Los comandos tsc y lint no arrojaron errores. Ya realicé el push a GitHub.
 
 ---
+
+## 🟢 Registro Dinámico de Tareas
+*(Añade tus bloqueos y tus reportes de finalización de QA a partir de aquí)*
 
 <!-- Empieza a añadir nuevas preguntas debajo de esta línea -->

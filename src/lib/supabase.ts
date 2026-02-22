@@ -1,15 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import type { Database } from "@/types/database";
 
 /**
- * Server-side Supabase client.
+ * Server-side Supabase client con tipos del esquema.
  * Úsalo en Server Components, Route Handlers y Server Actions.
  * Lee/escribe la sesión desde las cookies HTTP.
  */
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -24,7 +25,7 @@ export async function createSupabaseServerClient() {
             );
           } catch {
             // En Server Components de solo lectura el set falla silenciosamente.
-            // El middleware se encarga de refrescar las cookies en esos casos.
+            // El proxy se encarga de refrescar las cookies en esos casos.
           }
         },
       },
