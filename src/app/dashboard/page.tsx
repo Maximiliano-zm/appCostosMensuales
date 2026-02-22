@@ -67,7 +67,7 @@ export default async function DashboardPage() {
               style={{
                 borderColor: "var(--color-border)",
                 color: "var(--color-text-muted)",
-                minHeight: "40px",
+                minHeight: "44px",
               }}
             >
               Salir
@@ -84,20 +84,22 @@ export default async function DashboardPage() {
           }}
         >
           <span
-            className="flex-1 text-center text-xs font-bold py-2.5 border-b-2"
+            className="flex-1 text-center text-xs font-bold border-b-2 flex items-center justify-center"
             style={{
               borderColor: "var(--color-accent)",
               color: "var(--color-accent)",
+              minHeight: "44px",
             }}
           >
             Tarjetas
           </span>
           <Link
             href="/dashboard/metrics"
-            className="flex-1 text-center text-xs font-semibold py-2.5 border-b-2"
+            className="flex-1 text-center text-xs font-semibold border-b-2 flex items-center justify-center"
             style={{
               borderColor: "transparent",
               color: "var(--color-text-muted)",
+              minHeight: "44px",
             }}
           >
             Métricas
@@ -129,7 +131,7 @@ export default async function DashboardPage() {
               style={{
                 borderColor: "var(--color-border)",
                 color: "var(--color-text-muted)",
-                minHeight: "32px",
+                minHeight: "44px",
                 display: "flex",
                 alignItems: "center",
               }}

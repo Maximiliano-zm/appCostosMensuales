@@ -272,8 +272,8 @@ export default function ImportPage() {
                 setError(null);
                 if (fileInputRef.current) fileInputRef.current.value = "";
               }}
-              className="text-xs"
-              style={{ color: "var(--color-text-muted)" }}
+              className="text-xs flex items-center"
+              style={{ color: "var(--color-text-muted)", minHeight: "44px" }}
             >
               Cambiar archivo
             </button>

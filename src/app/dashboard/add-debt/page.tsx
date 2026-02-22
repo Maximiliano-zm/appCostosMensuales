@@ -369,7 +369,7 @@ export default function AddDebtPage() {
                   backgroundColor: "var(--color-bg-surface)",
                   borderColor: "var(--color-danger)",
                   color: "var(--color-danger)",
-                  minHeight: "32px",
+                  minHeight: "44px",
                 }}
               >
                 Eliminar
