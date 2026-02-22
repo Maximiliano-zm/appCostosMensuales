@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 function formatCLP(amount: number): string {
   return new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -59,17 +61,26 @@ export default function SummaryBanner({
       {/* Ingreso vs Ratio */}
       <div className="flex items-end justify-between mb-4">
         <div>
-          <p
-            className="text-xs mb-1"
-            style={{ color: "var(--color-text-muted)" }}
-          >
-            Ingreso mensual
-          </p>
+          <div className="flex items-center gap-3 mb-1">
+            <p
+              className="text-xs"
+              style={{ color: "var(--color-text-muted)" }}
+            >
+              Ingreso mensual
+            </p>
+            <Link
+              href="/settings"
+              className="text-xs font-semibold"
+              style={{ color: "var(--color-accent)" }}
+            >
+              {monthlyIncome > 0 ? "Editar" : "Configurar ›"}
+            </Link>
+          </div>
           <p
             className="text-xl font-bold"
-            style={{ color: "var(--color-success)" }}
+            style={{ color: monthlyIncome > 0 ? "var(--color-success)" : "var(--color-text-muted)" }}
           >
-            {formatCLP(monthlyIncome)}
+            {monthlyIncome > 0 ? formatCLP(monthlyIncome) : "No configurado"}
           </p>
         </div>
         <div className="text-right">

@@ -70,17 +70,18 @@ lib/
   > NOTA CLAUDE: Dashboard reescrito como Server Component con fetch paralelo de `debts` e `income`. Componentes: `SummaryBanner` (deuda total en rojo, ingreso en verde, ratio deuda/ingreso, barra de cobertura mensual %) y `DebtCard` (nombre banco, saldo actual, monto original, barra de progreso de pago con colores semánticos rojo/ámbar/verde). Header sticky con email + botón "Salir" (44px mínimo). FAB "Agregar Deuda" fijo abajo derecha (52px altura, ámbar). Empty state con dashed border. Todos los tokens del design system dark finance reutilizados. TypeScript ✅ ESLint ✅ sin warnings.
 
 ### Fase 3: Registro de Datos Manual (MVP Base)
-- [QA] **Task 3.1**: Interfaz "Add Debt" simple.
+- [x] **Task 3.1**: Interfaz "Add Debt" simple.
   - *Agente/Skill*: `frontend-specialist`, `mobile-design`
   - *INPUT*: Formulario de ingreso manual para Deudas (Banco, Saldo Actual, Monto Original, Foto Opcional como comprobante visual -sin IA-).
   - *OUTPUT*: Pantalla responsiva de captura de datos conectada a Supabase.
   - *VERIFY*: Al presionar guardar, los datos se reflejan directo en el Dashboard.
   > NOTA CLAUDE: Client Component `"use client"` en `src/app/(dashboard)/add-debt/page.tsx`. Campos: bank_name (req.), current_balance CLP (req.), original_amount CLP (opcional), foto comprobante (opcional, preview local vía FileReader). Validación client-side con mensajes de error inline. Upload de foto a bucket `debt-images` de Supabase Storage con fallback silencioso si el bucket no existe. Insert en tabla `debts`. Redirect a `/` + `router.refresh()` tras éxito. Loading state en botón (52px ámbar). Header sticky con botón "← Volver" (44px). Fix adicional: añadido `Relationships: []` a `src/types/database.ts` para compatibilidad con @supabase/postgrest-js v12. TypeScript ✅ ESLint ✅.
-- [ ] **Task 3.2**: Interfaz y lógica "Settings / Ingreso Mensual".
+- [QA] **Task 3.2**: Interfaz y lógica "Settings / Ingreso Mensual".
   - *Agente/Skill*: `frontend-specialist`
   - *INPUT*: Pantalla simple para configurar o actualizar el 'Ingreso Mensual' del usuario.
   - *OUTPUT*: Guardado en la tabla `income` de Supabase asociado al User ID.
   - *VERIFY*: El Banner del Dashboard recalcula los % automáticamente.
+  > NOTA CLAUDE: Server Component `src/app/(dashboard)/settings/page.tsx` hace auth + fetch del registro income existente. Pasa `existingId`, `initialAmount`, `initialNote` al Client Component `src/components/settings/IncomeForm.tsx` que maneja INSERT o UPDATE según si hay registro previo (sin UNIQUE constraint en user_id, se usa el id del registro). Botón "Editar / Configurar ›" agregado en `SummaryBanner.tsx` junto al ingreso mensual, mostrando "No configurado" si el monto es 0. Redirect a `/` + `router.refresh()` tras guardar. Touch targets ≥ 44px-52px. TypeScript ✅ ESLint ✅ sin errores.
 - [ ] **Task 3.3**: (Opcional MVP) Importador CSV/Excel básico.
   - *Agente/Skill*: `backend-specialist`
   - *INPUT*: Botón en el dashboard para subir un archivo pre-formateado con las deudas (plantilla CSV).
