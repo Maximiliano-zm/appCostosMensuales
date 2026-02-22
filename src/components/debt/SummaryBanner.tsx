@@ -20,7 +20,6 @@ export default function SummaryBanner({
   debtCount,
 }: SummaryBannerProps) {
   const ratio = monthlyIncome > 0 ? totalDebt / monthlyIncome : 0;
-  // Qué porcentaje de la deuda total cubre UN ingreso mensual
   const coveragePercent =
     totalDebt > 0 && monthlyIncome > 0
       ? Math.min(100, Math.round((monthlyIncome / totalDebt) * 100))
@@ -39,24 +38,32 @@ export default function SummaryBanner({
       style={{
         backgroundColor: "var(--color-bg-card)",
         borderColor: "var(--color-border)",
+        borderTopColor: "var(--color-accent)",
+        borderTopWidth: "2px",
       }}
     >
       {/* Label */}
       <p
-        className="text-xs font-semibold tracking-[0.2em] uppercase mb-2"
+        className="text-xs font-semibold tracking-[0.2em] uppercase mb-1"
         style={{ color: "var(--color-text-muted)" }}
       >
-        Deuda Total &middot; {debtCount}{" "}
-        {debtCount === 1 ? "cuenta" : "cuentas"}
+        Total Tarjetas de Crédito &middot; {debtCount}{" "}
+        {debtCount === 1 ? "tarjeta" : "tarjetas"}
       </p>
 
-      {/* Número grande */}
+      {/* Número grande — protagonista visual */}
       <p
-        className="text-4xl font-black tracking-tight mb-5"
+        className="text-5xl font-black tracking-tight leading-none mb-5"
         style={{ color: "var(--color-danger)" }}
       >
         {formatCLP(totalDebt)}
       </p>
+
+      {/* Divider */}
+      <div
+        className="w-full mb-4"
+        style={{ height: "1px", backgroundColor: "var(--color-border)" }}
+      />
 
       {/* Ingreso vs Ratio */}
       <div className="flex items-end justify-between mb-4">
@@ -78,7 +85,12 @@ export default function SummaryBanner({
           </div>
           <p
             className="text-xl font-bold"
-            style={{ color: monthlyIncome > 0 ? "var(--color-success)" : "var(--color-text-muted)" }}
+            style={{
+              color:
+                monthlyIncome > 0
+                  ? "var(--color-success)"
+                  : "var(--color-text-muted)",
+            }}
           >
             {monthlyIncome > 0 ? formatCLP(monthlyIncome) : "No configurado"}
           </p>
@@ -90,14 +102,14 @@ export default function SummaryBanner({
           >
             Ratio deuda&nbsp;/&nbsp;ingreso
           </p>
-          <p className="text-xl font-bold" style={{ color: ratioColor }}>
+          <p className="text-2xl font-black" style={{ color: ratioColor }}>
             {monthlyIncome > 0 ? `${ratio.toFixed(1)}x` : "—"}
           </p>
         </div>
       </div>
 
       {/* Barra de cobertura */}
-      {totalDebt > 0 && (
+      {totalDebt > 0 && monthlyIncome > 0 && (
         <>
           <div
             className="w-full h-2"
@@ -116,7 +128,10 @@ export default function SummaryBanner({
             style={{ color: "var(--color-text-muted)" }}
           >
             Tu ingreso mensual cubre el{" "}
-            <span style={{ color: "var(--color-text-secondary)" }}>
+            <span
+              className="font-semibold"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
               {coveragePercent}%
             </span>{" "}
             de tu deuda total
@@ -124,8 +139,14 @@ export default function SummaryBanner({
         </>
       )}
 
+      {totalDebt > 0 && monthlyIncome === 0 && (
+        <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
+          Configura tu ingreso para ver el ratio y la cobertura.
+        </p>
+      )}
+
       {totalDebt === 0 && (
-        <p className="text-sm" style={{ color: "var(--color-success)" }}>
+        <p className="text-sm font-semibold" style={{ color: "var(--color-success)" }}>
           Sin deudas registradas. ¡Excelente!
         </p>
       )}

@@ -15,6 +15,11 @@ export interface Database {
           current_balance: number;
           original_amount: number | null;
           image_url: string | null;
+          // Billing cycle fields (added in migration 20260222)
+          statement_balance: number | null;
+          minimum_payment: number | null;
+          next_due_date: string | null; // ISO date "YYYY-MM-DD"
+          interest_rate: number | null; // percentage, e.g. 2.5 = 2.5%
           created_at: string;
           updated_at: string;
         };
@@ -25,6 +30,10 @@ export interface Database {
           current_balance: number;
           original_amount?: number | null;
           image_url?: string | null;
+          statement_balance?: number | null;
+          minimum_payment?: number | null;
+          next_due_date?: string | null;
+          interest_rate?: number | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -35,6 +44,10 @@ export interface Database {
           current_balance?: number;
           original_amount?: number | null;
           image_url?: string | null;
+          statement_balance?: number | null;
+          minimum_payment?: number | null;
+          next_due_date?: string | null;
+          interest_rate?: number | null;
           created_at?: string;
           updated_at?: string;
         };

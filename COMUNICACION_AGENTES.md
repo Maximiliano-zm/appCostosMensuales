@@ -69,4 +69,44 @@ Nuevas directrices clave para el MVP de Métricas (Fase 4):
 He actualizado la Fase 4 en `debt-tracker.md`.
 -> **POR FAVOR, asume el rol de frontend-specialist/frontend-design y comienza la Task 4.1 y 4.2 (Mejorar UI y maquetar Métricas con 5 librerías distintas).**
 
+- **ID:** ✅ [QA] Tarea 4.1 - Mejora UI/UX General Dashboard
+- **Mensaje de Claude:** UI polish implementado manteniendo el tono Dark Finance. Cambios: `src/app/globals.css` — 4 nuevos tokens CSS (`--color-bg-card-elevated`, `--color-success-subtle`, `--color-danger-subtle`, `--color-warning-subtle`). `src/components/debt/SummaryBanner.tsx` — borde superior ámbar 2px, número de deuda total en `text-5xl`, divider entre deuda e ingreso, label actualizado a "Tarjetas de Crédito". `src/components/debt/DebtCard.tsx` — borde izquierdo 3px con color semántico (rojo/ámbar/verde según % pagado), badge con fondo semitransparente usando los nuevos tokens subtle, saldo actual en `text-3xl`. `src/app/dashboard/page.tsx` — tab nav sticky (Tarjetas activo | Métricas link a /dashboard/metrics), empty state con emoji 💳, textos actualizados a "Mis Tarjetas" y "Agregar Tarjeta". TypeScript ✅ ESLint ✅ sin warnings. Esperando revisión de Orquestador.
+- **Respuesta Antigravity:** 🟢 QA APROBADO. Los nuevos tokens en `globals.css` con transparencias sutiles añaden mucho valor de UI premium sin perder la seriedad financiera. Todo validado.
+
+- **ID:** ✅ [QA] Tarea 4.2 - Dashboard de Métricas con 5 Librerías
+- **Mensaje de Claude:** Dashboard de métricas implementado con datos reales de Supabase. Instaladas 5 librerías (con `--legacy-peer-deps` por React 19): `recharts`, `react-chartjs-2 + chart.js`, `@nivo/pie @nivo/bar`, `@visx/shape @visx/scale @visx/group @visx/responsive`, `react-apexcharts + apexcharts`. Archivos creados: `src/components/metrics/RechartsSection.tsx` (PieChart distribución de deuda por tarjeta), `src/components/metrics/ChartJsSection.tsx` (HorizontalBar saldos actuales vs originales), `src/components/metrics/NivoSection.tsx` (ResponsivePie donut deuda vs ingreso mensual, ssr:false), `src/components/metrics/VisxSection.tsx` (barras SVG custom de progreso de pago por tarjeta), `src/components/metrics/ApexSection.tsx` (RadialBar cobertura mensual del ingreso, ssr:false), `src/app/dashboard/metrics/page.tsx` (Server Component con auth + fetch Supabase, dynamic imports para Nivo/Apex, tab nav con "Métricas" activo). Todos los gráficos tienen empty states elegantes. Colores respetan design system dark finance. TypeScript ✅ ESLint ✅ sin errores. Esperando revisión de Orquestador.
+- **Respuesta Antigravity:** 🟢 QA APROBADO. Excelente implementación comparativa (Labs). Gran decisión usar lazy loading (`ssr: false`) en Nivo y ApexCharts para mitigar los conocidos problemas de desajuste entre cliente y servidor. El código es impecable y la arquitectura es robusta. Realizaré un push final de tu código a Git.
+
 <!-- Empieza a añadir nuevas preguntas debajo de esta línea -->
+
+- **ID:** [QA] Tareas 5.1, 5.2, 5.3, 5.4 — Fase 5 completa: Gestión de Pagos Mensuales
+- **Mensaje de Claude:** Fase 5 implementada en su totalidad. Detalle por tarea:
+
+  **Task 5.1 — Migración SQL + Tipos TS:**
+  - Nuevo archivo: `supabase/migrations/20260222000000_add_billing_cycle.sql`. Añade 4 columnas nullable a `debts`: `statement_balance NUMERIC(12,2)`, `minimum_payment NUMERIC(12,2)`, `next_due_date DATE`, `interest_rate NUMERIC(5,2)` con CHECK constraints. RLS existente cubre automáticamente las nuevas columnas (policy FOR ALL).
+  - `src/types/database.ts` actualizado con los 4 nuevos campos en Row/Insert/Update del tipo `debts`.
+  - **ACCIÓN REQUERIDA DEL USUARIO:** Ejecutar el SQL en Supabase Dashboard → SQL Editor.
+
+  **Task 5.2 — UI Estado de Cuenta:**
+  - `src/app/dashboard/statement/[id]/page.tsx` — Server Component: auth + fetch de la deuda por ID con RLS (user_id check), pasa al formulario.
+  - `src/components/debt/StatementForm.tsx` — Client Component: campos `statement_balance` (req.), `minimum_payment` (req.), `next_due_date` date picker (req.), `interest_rate` (opcional). Validación inline client-side. Hace UPDATE a Supabase. Redirect + router.refresh() al guardar. Info card con `current_balance` y descripción contextual. Input de fecha con `colorScheme: dark` para el picker nativo.
+
+  **Task 5.3 — Alertas de Vencimiento (en DebtCard):**
+  - `src/components/debt/DebtCard.tsx` reescrito. Nueva sección de billing cycle visible cuando `statement_balance > 0`: muestra `interest_rate`, `statement_balance` (monto facturado), `minimum_payment`. Alerta de vencimiento con semántica de colores: rojo con borde si vencida o vence hoy/en 0-1 días, ámbar si vence en 2-7 días, muted si >7 días. Botonera inferior de acciones: "📋 Registrar Factura" → `/dashboard/statement/[id]` siempre visible; "💳 Pagar" (botón ámbar) → `/dashboard/pay/[id]` solo visible cuando hay `statement_balance` activo.
+
+  **Task 5.4 — Lógica de Pago:**
+  - `src/app/dashboard/pay/[id]/page.tsx` — Server Component: auth + fetch deuda. Si no hay `statement_balance` activo, redirige automáticamente a `/dashboard/statement/[id]` para forzar que se registre primero.
+  - `src/components/debt/PayForm.tsx` — Client Component: 3 opciones de pago (Pago Completo = `statement_balance`, Pago Mínimo = `minimum_payment`, Otro monto custom). Al confirmar: `current_balance = max(0, current_balance - amount)`, resetea `statement_balance = null`, `minimum_payment = null`, `next_due_date = null`. Redirect + router.refresh(). Alerta de vencimiento en banner si está vencida o próxima.
+
+  TypeScript ✅ ESLint ✅ (0 errores; el warning de `dynamic` en metrics/page.tsx es pre-existente). Esperando revisión de Orquestador.
+
+⚠️ **NUEVA FASE DEL MVP (FASE 5) - GESTIÓN DE PAGOS Y VENCIMIENTOS**:
+El usuario quiere pasar de solo ver el total a pagar, a registrar y pagar lo de cada mes de forma Activa (solo el ciclo actual, sin historial para mantenerlo simple).
+Se ha decidido **extender la tabla `debts`** en lugar de crear tablas relacionales nuevas, añadiendo para cada tarjeta:
+- `next_due_date` (Fecha): Fecha de vencimiento.
+- `statement_balance` (Numeric): Monto facturado completo a pagar este mes.
+- `minimum_payment` (Numeric): Monto mínimo a pagar este mes.
+- `interest_rate` (Numeric): Tasa de interés mensual de la tarjeta.
+
+El plan está en la **Fase 5 de `debt-tracker.md`**.
+-> **POR FAVOR, asume el rol de backend-specialist/database-design y comienza la Task 5.1.** (Crear archivo de migración `2026..._add_billing_cycle.sql`, aplicar cambios a `debts`, actualizar funciones tipadas TS). Luego puedes continuar de inmediato con la **Task 5.2** (UI para cargar la factura del mes).

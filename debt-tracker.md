@@ -90,18 +90,39 @@ lib/
   > NOTA CLAUDE: Client Component en `src/app/(dashboard)/import/page.tsx`. Sin dependencias externas: parseo CSV nativo (maneja BOM de Excel, CRLF, campos con comillas). Flujo: descarga plantilla (Blob + link) → selecciona archivo → FileReader → preview tabla con validación fila a fila (banco requerido, saldo > 0, original ≥ saldo si existe) → filas inválidas se omiten con mensaje de error → botón "Importar N deudas" → batch insert a Supabase → redirect + refresh. Link "↑ Importar CSV" agregado en header de sección "Mis Deudas" del dashboard. TypeScript ✅ ESLint ✅.
 
 ### Fase 4: Dashboard de Métricas Analíticas (Labs & UI Polish)
-- [ ] **Task 4.1**: Mejorar el UI/UX General del Dashboard.
+- [x] **Task 4.1**: Mejorar el UI/UX General del Dashboard.
   - *Agente/Skill*: `frontend-specialist`, `frontend-design`
   - *INPUT*: Revisar el dashboard principal y componentes actuales. Refinar estilos, sombras, espaciados y microinteracciones para que deje de verse "feo" y se sienta premium y moderno (manteniendo el tono Dark Finance).
   - *OUTPUT*: Una interfaz significativamente más atractiva y pulida.
-- [ ] **Task 4.2**: Crear la pestaña de Métricas Integrando 5 Librerías Distintas.
+  > NOTA CLAUDE: SummaryBanner mejorado: borde superior ámbar 2px, número de deuda en text-5xl, divider entre secciones, label actualizado a "Tarjetas de Crédito". DebtCard: borde izquierdo 3px con color semántico (rojo/ámbar/verde según % pagado), badge con fondo semitransparente (success/warning/danger-subtle), saldo en text-3xl. Dashboard: tab nav sticky (Tarjetas | Métricas), empty state con emoji 💳, texto actualizado a "Mis Tarjetas" y "Agregar Tarjeta". globals.css: tokens --color-bg-card-elevated, --color-success/warning/danger-subtle. TypeScript ✅ ESLint ✅.
+- [x] **Task 4.2**: Crear la pestaña de Métricas Integrando 5 Librerías Distintas.
   - *Agente/Skill*: `frontend-specialist`
   - *INPUT*: Crear `/dashboard/metrics`. Implementar gráficos usando **5 librerías distintas** (Ej: Recharts, Tremor, Chart.js/react-chartjs-2, Nivo, Visx, o ApexCharts) para comparar cuál se ve y rinde mejor en móviles.
   - *OUTPUT*: Un dashboard "labs" con múltiples aproximaciones visuales para los mismos datos (deuda por tarjeta, % de ingresos, etc), inicialmente con datos simulados o conectados a la actual db.
+  > NOTA CLAUDE: Instaladas 5 librerías (--legacy-peer-deps por React 19): recharts, react-chartjs-2+chart.js, @nivo/pie+bar, @visx/shape+scale+group+responsive, react-apexcharts+apexcharts. Creados: 5 componentes en src/components/metrics/ + src/app/dashboard/metrics/page.tsx (Server Component con datos reales de Supabase). Secciones: (1) Recharts PieChart distribución por tarjeta, (2) Chart.js HorizontalBar saldos actuales+originales, (3) Nivo ResponsivePie donut deuda vs ingreso, (4) Visx SVG custom barras progreso de pago, (5) ApexCharts RadialBar cobertura mensual. Nivo y ApexCharts con next/dynamic ssr:false. Tab nav Tarjetas|Métricas en ambas vistas. TypeScript ✅ ESLint ✅.
 - [ ] **Task 4.3**: Flujo Real y Refinamiento (Supabase).
   - *Agente/Skill*: `backend-specialist`
   - *INPUT*: Recolectar `debts` e `income` del usuario y calcular métricas en tiempo real.
   - *OUTPUT*: Todos los gráficos reflejan la realidad financiera real del usuario desde Supabase.
+  > NOTA: Task 4.2 ya conecta a Supabase directamente (Task 4.3 cubierto en paralelo).
+
+### Fase 5: Gestión de Pagos Mensuales (Vista Activa)
+- [x] **Task 5.1**: Actualización de Esquema BD (`monthly_statement` o campos adicionales).
+  - *Agente/Skill*: `backend-specialist`, `database-design`
+  - *INPUT*: Crear migración SQL `20260222..._add_billing_cycle.sql` agregando columnas a `debts` (como `statement_balance`, `minimum_payment`, `next_due_date`, `interest_rate`) para alojar la "vista activa" del mes y fecha de vencimiento. Actualizar RLS y Types.
+  - *OUTPUT*: Base de datos lista para registrar facturas mensuales e intereses, con tipos de TypeScript actualizados.
+- [x] **Task 5.2**: Modal/Vista de Registro de "Estado de Cuenta".
+  - *Agente/Skill*: `frontend-specialist`, `frontend-design`
+  - *INPUT*: Crear UI que permita al usuario seleccionar una tarjeta, introducir la `next_due_date`, la `interest_rate`, el Monto Facturado Completo (`statement_balance`) y el Pago Mínimo (`minimum_payment`). 
+  - *OUTPUT*: Formulario validado guardando estos nuevos datos en la DB.
+- [x] **Task 5.3**: Dashboard de Flujo y Vencimientos.
+  - *Agente/Skill*: `frontend-specialist`
+  - *INPUT*: Incorporar alertas ("Pronto a vencer" / "Vencido") dinámicas basadas en `next_due_date` respecto de hoy. Mostrar Tasa de Interés para decidir qué pagar primero. Crear interfaz para "Pagar esta deúda" escogiendo pago Mínimo, Completo u Otro.
+  - *OUTPUT*: El usuario visualiza de forma estructurada qué pagar del mes en curso y sus vencimientos.
+- [x] **Task 5.4**: Lógica de Descuento (Pago).
+  - *Agente/Skill*: `backend-specialist`
+  - *INPUT*: Acción Server o RPC que tome el monto pagado, lo reste de `current_balance` de la tarjeta, y resetee `statement_balance` o corra la fecha de vencimiento en caso de ser necesario tras el pago.
+  - *OUTPUT*: Las tarjetas descuentan sus balances generales con cada pago mensual ejecutado.
 
 ## ✅ Phase X: Verification
 - [ ] **Security**: Analizar secretos o contraseñas en código duro (`checklist.py`).

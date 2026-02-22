@@ -14,7 +14,7 @@ export default async function DashboardPage() {
 
   if (!user) redirect("/login");
 
-  // Fetch deudas e ingreso en paralelo
+  // Fetch deudas e ingreso
   const { data: debts } = await supabase
     .from("debts")
     .select("*")
@@ -36,43 +36,74 @@ export default async function DashboardPage() {
       className="min-h-dvh pb-28"
       style={{ backgroundColor: "var(--color-bg-base)" }}
     >
-      {/* ── Header ──────────────────────────────────────────────── */}
-      <header
-        className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 border-b"
-        style={{
-          backgroundColor: "var(--color-bg-surface)",
-          borderColor: "var(--color-border)",
-        }}
-      >
-        <div>
-          <p
-            className="text-xs font-black tracking-[0.25em] uppercase"
-            style={{ color: "var(--color-accent)" }}
-          >
-            Debt Tracker
-          </p>
-          <p
-            className="text-xs truncate max-w-[200px]"
-            style={{ color: "var(--color-text-muted)" }}
-          >
-            {user.email}
-          </p>
-        </div>
+      {/* ── Header + Tab Nav (sticky juntos) ────────────────────── */}
+      <div className="sticky top-0 z-10">
+        <header
+          className="flex items-center justify-between px-5 py-3 border-b"
+          style={{
+            backgroundColor: "var(--color-bg-surface)",
+            borderColor: "var(--color-border)",
+          }}
+        >
+          <div>
+            <p
+              className="text-xs font-black tracking-[0.25em] uppercase"
+              style={{ color: "var(--color-accent)" }}
+            >
+              Debt Tracker
+            </p>
+            <p
+              className="text-xs truncate max-w-[200px]"
+              style={{ color: "var(--color-text-muted)" }}
+            >
+              {user.email}
+            </p>
+          </div>
 
-        <form action={signOut}>
-          <button
-            type="submit"
-            className="border px-4 text-xs font-semibold transition-colors duration-150 hover:border-[var(--color-danger)] hover:text-[var(--color-danger)]"
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="border px-4 text-xs font-semibold transition-colors duration-150 hover:border-[var(--color-danger)] hover:text-[var(--color-danger)]"
+              style={{
+                borderColor: "var(--color-border)",
+                color: "var(--color-text-muted)",
+                minHeight: "40px",
+              }}
+            >
+              Salir
+            </button>
+          </form>
+        </header>
+
+        {/* Tab Nav */}
+        <nav
+          className="flex border-b"
+          style={{
+            backgroundColor: "var(--color-bg-surface)",
+            borderColor: "var(--color-border)",
+          }}
+        >
+          <span
+            className="flex-1 text-center text-xs font-bold py-2.5 border-b-2"
             style={{
-              borderColor: "var(--color-border)",
-              color: "var(--color-text-muted)",
-              minHeight: "44px",
+              borderColor: "var(--color-accent)",
+              color: "var(--color-accent)",
             }}
           >
-            Salir
-          </button>
-        </form>
-      </header>
+            Tarjetas
+          </span>
+          <Link
+            href="/dashboard/metrics"
+            className="flex-1 text-center text-xs font-semibold py-2.5 border-b-2"
+            style={{
+              borderColor: "transparent",
+              color: "var(--color-text-muted)",
+            }}
+          >
+            Métricas
+          </Link>
+        </nav>
+      </div>
 
       {/* ── Contenido ───────────────────────────────────────────── */}
       <div className="max-w-md mx-auto px-4 pt-5 flex flex-col gap-4">
@@ -90,7 +121,7 @@ export default async function DashboardPage() {
               className="text-xs font-semibold tracking-[0.2em] uppercase"
               style={{ color: "var(--color-text-muted)" }}
             >
-              Mis Deudas
+              Mis Tarjetas
             </p>
             <Link
               href="/dashboard/import"
@@ -109,21 +140,25 @@ export default async function DashboardPage() {
 
           {debtList.length === 0 ? (
             <div
-              className="border border-dashed p-10 text-center"
+              className="border border-dashed p-10 text-center flex flex-col items-center gap-3"
               style={{ borderColor: "var(--color-border)" }}
             >
-              <p
-                className="text-sm font-semibold mb-1"
-                style={{ color: "var(--color-text-secondary)" }}
-              >
-                Sin deudas registradas
-              </p>
-              <p
-                className="text-xs"
-                style={{ color: "var(--color-text-muted)" }}
-              >
-                Toca el botón + para agregar tu primera deuda
-              </p>
+              <span style={{ fontSize: "2.5rem", lineHeight: 1 }}>💳</span>
+              <div>
+                <p
+                  className="text-sm font-bold mb-1"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  Sin tarjetas registradas
+                </p>
+                <p
+                  className="text-xs"
+                  style={{ color: "var(--color-text-muted)" }}
+                >
+                  Agrega una tarjeta manualmente con el botón +<br />
+                  o importa varias a la vez con CSV.
+                </p>
+              </div>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -135,7 +170,7 @@ export default async function DashboardPage() {
         </section>
       </div>
 
-      {/* ── FAB: Agregar Deuda ──────────────────────────────────── */}
+      {/* ── FAB: Agregar Tarjeta ─────────────────────────────────── */}
       <div className="fixed bottom-6 right-4 z-20">
         <Link
           href="/dashboard/add-debt"
@@ -148,7 +183,7 @@ export default async function DashboardPage() {
           }}
         >
           <span className="text-xl leading-none font-black">+</span>
-          Agregar Deuda
+          Agregar Tarjeta
         </Link>
       </div>
     </main>
