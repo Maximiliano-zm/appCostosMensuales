@@ -117,3 +117,48 @@ Se ha decidido **extender la tabla `debts`** en lugar de crear tablas relacional
 
 El plan está en la **Fase 5 de `debt-tracker.md`**.
 -> **POR FAVOR, asume el rol de backend-specialist/database-design y comienza la Task 5.1.** (Crear archivo de migración `2026..._add_billing_cycle.sql`, aplicar cambios a `debts`, actualizar funciones tipadas TS). Luego puedes continuar de inmediato con la **Task 5.2** (UI para cargar la factura del mes).
+
+---
+
+## ✅ Phase X — Verificación Final & Deploy a Producción
+
+- **ID:** ✅ Phase X — Security + Build + UI Audit + Deploy
+- **Ejecutado por:** Antigravity (2026-02-22)
+
+### Security Audit
+- `src/` — Sin secretos hardcodeados. Todo usa `process.env.*`. ✅
+- `.env.example` — Tenía password real `MWRPbqbbCPX5FZ4I` hardcodeado (introducido en commit `9af1b22`). **Fix aplicado:** reemplazado por placeholder `tu-password-de-base-de-datos-aqui`.
+- `.env.local` — Correctamente ignorado por git. No comprometido. ✅
+- ⚠️ **ACCIÓN PENDIENTE DEL USUARIO:** Rotar el password de Supabase en Dashboard → Settings → Database → Reset database password (el valor antiguo quedó en historial de git).
+
+### Build Check
+- `npm run build` — ✅ Compiled successfully. TypeScript clean. 12 rutas generadas sin errores ni warnings.
+
+### UI Audit — Touch Targets (5 violaciones corregidas)
+| Archivo | Elemento | Antes | Después |
+|---------|----------|-------|---------|
+| `dashboard/page.tsx` | Botón Salir | 40px | 44px |
+| `dashboard/page.tsx` | Link Importar CSV | 32px | 44px |
+| `dashboard/page.tsx` | Tab nav Tarjetas/Métricas | ~32px | 44px (flex items-center) |
+| `add-debt/page.tsx` | Botón Eliminar foto | 32px | 44px |
+| `import/page.tsx` | Botón Cambiar archivo | ~24px | 44px |
+
+### Deploy Vercel
+- **URL producción:** https://app-costos-mensuales.vercel.app
+- **Proyecto Vercel:** `maximilianozms-projects/app-costos-mensuales`
+- **Fix requerido para deploy:** `.npmrc` con `legacy-peer-deps=true` (por conflicto peer deps de @visx y @nivo con React 19).
+- Variables de entorno configuradas en Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL`.
+
+### Supabase Auth — Producción
+- `site_url` actualizado a `https://app-costos-mensuales.vercel.app` via Management API. ✅
+- `uri_allow_list` incluye `https://app-costos-mensuales.vercel.app/auth/callback` y `http://localhost:3000/auth/callback`. ✅
+- Google OAuth ya estaba habilitado. Login en producción operativo.
+
+### MCPs configurados en `~/.claude/settings.json`
+- `vercel` — `https://mcp.vercel.com` (HTTP, read-only)
+- `supabase` — `npx @supabase/mcp-server-supabase@latest` con PAT (activo en próxima sesión)
+
+### Commits de Phase X
+- `f531a97` — fix(metrics): desacoplar chartPercent/realCoveragePercent en ApexSection
+- `c713366` — fix(security+ui): auditoría de secretos y touch targets
+- `50866d2` — fix(deploy): .npmrc con legacy-peer-deps para Vercel
