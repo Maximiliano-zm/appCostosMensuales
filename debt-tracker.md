@@ -56,17 +56,18 @@ lib/
   > NOTA CLAUDE: Implementado con @supabase/ssr. Archivos: src/proxy.ts (auth guard, migrado de middleware a proxy — convención Next.js 16), src/lib/supabase.ts (server factory con cookies), src/lib/supabase-browser.ts (browser client), src/app/auth/callback/route.ts (OAuth code exchange), login/page.tsx (Client Component + Google OAuth), dashboard/page.tsx (Server Component + getUser), dashboard/actions.ts (Server Action signOut). TypeScript ✅ ESLint ✅ npm run dev sin warnings ✅. PENDIENTE DEL USUARIO: completar .env.local con credenciales Supabase y configurar Google OAuth en Supabase Dashboard (ver .env.example).
 
 ### Fase 2: Base de Datos y Tablero (Dashboard)
-- [QA] **Task 2.1**: Crear esquema de Base de Datos para Deudas e Ingresos.
+- [x] **Task 2.1**: Crear esquema de Base de Datos para Deudas e Ingresos.
   - *Agente/Skill*: `database-architect`, `database-design`
   - *INPUT*: Archivo SQL con la tabla `debts` y la tabla `income`.
   - *OUTPUT*: Tablas en Supabase con políticas de privacidad RLS (el usuario solo ve su propia información).
   - *VERIFY*: Se pueden hacer INSERTS desde el panel de Supabase.
   > NOTA CLAUDE: Migración en supabase/migrations/20260221000000_initial_schema.sql. Tablas: debts (id, user_id, bank_name, current_balance, original_amount, image_url, timestamps) + income (id, user_id, monthly_amount, note, timestamps). RLS habilitado en ambas con policy "owner access only". Índices en user_id. Trigger updated_at automático. Rollback incluido (comentado). Tipos TS en src/types/database.ts. Clientes supabase.ts y supabase-browser.ts actualizados con Database generic. TypeScript ✅ ESLint ✅ dev ✅. ACCIÓN REQUERIDA DEL USUARIO: ejecutar el SQL en Supabase Dashboard → SQL Editor para crear las tablas en el proyecto real.
-- [ ] **Task 2.2**: Construir la UI del Dashboard enfocada en móviles.
+- [QA] **Task 2.2**: Construir la UI del Dashboard enfocada en móviles.
   - *Agente/Skill*: `frontend-specialist`, `mobile-design`
   - *INPUT*: Diseñar un progreso visual (Deuda cubierta vs Ingreso libre) y lista de tarjetas de crédito.
   - *OUTPUT*: Interfaz atractiva y 100% responsiva (vista celular).
   - *VERIFY*: Los botones y las métricas se ven grandes y claros y siguen un contraste legible.
+  > NOTA CLAUDE: Dashboard reescrito como Server Component con fetch paralelo de `debts` e `income`. Componentes: `SummaryBanner` (deuda total en rojo, ingreso en verde, ratio deuda/ingreso, barra de cobertura mensual %) y `DebtCard` (nombre banco, saldo actual, monto original, barra de progreso de pago con colores semánticos rojo/ámbar/verde). Header sticky con email + botón "Salir" (44px mínimo). FAB "Agregar Deuda" fijo abajo derecha (52px altura, ámbar). Empty state con dashed border. Todos los tokens del design system dark finance reutilizados. TypeScript ✅ ESLint ✅ sin warnings.
 
 ### Fase 3: Lógica de Carga y Lectura Inteligente de Imágenes
 - [ ] **Task 3.1**: Interfaz "Add Debt" para carga de capturas de pantalla.
