@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens: Dark Finance Theme ─────────────────────────────────────
+   Paleta: Slate profundo + Ámbar/Oro
+   Sin morado, sin azules genéricos, sin mesh gradients.
+   Geometría: sharp (0-2px radius) — app financiera seria.
+──────────────────────────────────────────────────────────────────────────── */
+@theme inline {
+  /* Base */
+  --color-bg-base:    #080d14;
+  --color-bg-surface: #0f1825;
+  --color-bg-card:    #141e2e;
+  --color-border:     #1f2f45;
+
+  /* Text */
+  --color-text-primary:   #f0f4f8;
+  --color-text-secondary: #8ba3bc;
+  --color-text-muted:     #4a6080;
+
+  /* Accent: Ámbar/Oro — símbolo financiero, sin cliché azul fintech */
+  --color-accent:         #f5a623;
+  --color-accent-dim:     #c47d10;
+  --color-accent-subtle:  #2a1e08;
+
+  /* Semánticos */
+  --color-success:  #22c55e;
+  --color-danger:   #ef4444;
+  --color-warning:  #f5a623;
+
+  /* Fonts (Geist — instalado por create-next-app) */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ─── Reset base ────────────────────────────────────────────────────────────*/
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Evitar flash en dark-only app */
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+/* ─── Scrollbar (thin, on-brand) ────────────────────────────────────────────*/
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--color-bg-base); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+/* ─── Focus ring (accesibilidad) ────────────────────────────────────────────*/
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ─── Animaciones: respeta prefers-reduced-motion ───────────────────────────*/
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
