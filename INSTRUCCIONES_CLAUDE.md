@@ -30,23 +30,24 @@ Para asegurar la calidad del proyecto basándonos en nuestras directrices (`clea
 
 ---
 
-## 📝 REGISTRO DE PROGRESO (TU RESPONSABILIDAD)
+## 📝 REGISTRO DE PROGRESO Y QA (TU RESPONSABILIDAD)
 
-Al final del desarrollo de **cada tarea pequeña** o hito, debes actualizar manualmente el archivo `debt-tracker.md` cambiando el estado de la lista de tareas.
+Al final del desarrollo de **cada tarea pequeña**, no debes darla por terminada de manera definitiva. Seguiremos un flujo profesional de Aseguramiento de Calidad (QA).
+
+**Estados de la tarea:** `[ ]` Pendiente ➔ `[/]` En progreso ➔ `[QA]` Lista para Revisión ➔ `[x]` Aprobada por Orquestador
 
 **Cómo reportar progreso:**
-1. Lee `debt-tracker.md` para encontrar cuál es el siguiente paso `[ ]`.
+1. Lee `debt-tracker.md` para encontrar cuál es el siguiente paso `[ ]` y cámbialo a `[/]`.
 2. Lee los requisitos y el Criterio de Verificación (`VERIFY`).
 3. Ejecuta la programación en el código base.
-4. Una vez superfiada con éxito, edita `debt-tracker.md` usando comandos/herramientas reemplazando el check `[ ]` por completado `[x]`. 
-5. Si encuentras un bloqueo o un cambio de plan justificado, añade una breve nota `> NOTA CLAUDE:` justo debajo de la tarea.
+4. Una vez que apruebes el código localmente, edita `debt-tracker.md` reemplazando `[/]` por `[QA]`.
+5. Si encuentras un bloqueo, añade `> NOTA CLAUDE:` y usa la Puerta Socrática en `COMUNICACION_AGENTES.md`.
 
-## 🏁 Flujo de Activación
+## 🏁 Flujo de Activación y Paso de Testigo
 
 Cuando el usuario te indique "Empieza con la Tarea X", vas a:
-1. Leer `debt-tracker.md` y esta misma guía.
-2. Identificar el Agente y Skills necesarios de Antigravity Kit.
-3. Planificar rápidamente qué harás y ejecutarlo.
-4. Comprobar que el código funciona (Ej: compilando).
-5. Editar `debt-tracker.md` para tachar la tarea terminada.
-6. Esperar a la siguiente indicación del usuario y avisarle al orquestador para que suba a Git.
+1. Leer el plan, identificar el Agente y Skills necesarios de Antigravity Kit.
+2. Marcar la tarea como `[/]` y programarla.
+3. Comprobar que compila/funciona bien.
+4. Marcar la tarea como `[QA]` en `debt-tracker.md`.
+5. **DO NOT COMMUNICATE MORE:** Detenerte por completo y avisarle al usuario que marque a Antigravity Agent. Antigravity hará la revisión de QA antes de hacer *push*.

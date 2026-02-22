@@ -39,6 +39,7 @@ lib/
 ```
 
 ## 📋 Task Breakdown
+> **Estados de Tareas:** `[ ]` Pendiente ➔ `[/]` En Progreso ➔ `[QA]` Lista para Revisión ➔ `[x]` Aprobada y Pusheada
 
 ### Fase 1: Setup y Autenticación
 - [x] **Task 1.1**: Inicializar Next.js con Tailwind y preparar Supabase.
@@ -47,11 +48,12 @@ lib/
   - *OUTPUT*: Proyecto corriendo con Supabase conectado.
   - *VERIFY*: `npm run dev` levanta sin errores.
   > NOTA CLAUDE: Proyecto inicializado con Next.js 16.1.6, React 19, TypeScript strict, Tailwind v4, @supabase/supabase-js. Estructura de rutas y lib/ creada. Sistema de diseño dark finance (slate + ámbar, sin morado) configurado en globals.css. `npm run dev` levanta en ~624ms sin errores. Credenciales en .env.local (vacías — el usuario debe completarlas). Sin operaciones Git.
-- [ ] **Task 1.2**: Implementar Google Login con Supabase Auth.
+- [QA] **Task 1.2**: Implementar Google Login con Supabase Auth.
   - *Agente/Skill*: `backend-specialist`, `api-patterns`
   - *INPUT*: Configuración de Supabase Auth en Next.js.
   - *OUTPUT*: Login bloqueando rutas privadas; desvía exitosamente a `/dashboard`.
   - *VERIFY*: Se puede iniciar y cerrar sesión.
+  > NOTA CLAUDE: Implementado con @supabase/ssr. Archivos: src/proxy.ts (auth guard, migrado de middleware a proxy — convención Next.js 16), src/lib/supabase.ts (server factory con cookies), src/lib/supabase-browser.ts (browser client), src/app/auth/callback/route.ts (OAuth code exchange), login/page.tsx (Client Component + Google OAuth), dashboard/page.tsx (Server Component + getUser), dashboard/actions.ts (Server Action signOut). TypeScript ✅ ESLint ✅ npm run dev sin warnings ✅. PENDIENTE DEL USUARIO: completar .env.local con credenciales Supabase y configurar Google OAuth en Supabase Dashboard (ver .env.example).
 
 ### Fase 2: Base de Datos y Tablero (Dashboard)
 - [ ] **Task 2.1**: Crear esquema de Base de Datos para Deudas e Ingresos.
