@@ -24,12 +24,10 @@ export default function ApexSection({ totalDebt, monthlyIncome }: ApexProps) {
     );
   }
 
-  const coveragePercent = Math.min(
-    100,
-    Math.round((monthlyIncome / totalDebt) * 100)
-  );
+  const realCoveragePercent = Math.round((monthlyIncome / totalDebt) * 100);
+  const chartPercent = Math.min(100, realCoveragePercent);
 
-  const series = [coveragePercent];
+  const series = [chartPercent];
 
   const options: ApexCharts.ApexOptions = {
     chart: {
@@ -63,7 +61,7 @@ export default function ApexSection({ totalDebt, monthlyIncome }: ApexProps) {
             fontSize: "28px",
             fontWeight: 900,
             offsetY: -10,
-            formatter: (val: number) => `${val}%`,
+            formatter: () => `${realCoveragePercent}%`,
           },
         },
       },
@@ -94,7 +92,7 @@ export default function ApexSection({ totalDebt, monthlyIncome }: ApexProps) {
       <p className="text-xs text-center mt-1" style={{ color: "var(--color-text-muted)" }}>
         Tu ingreso mensual cubre el{" "}
         <span style={{ color: "var(--color-accent)", fontWeight: 700 }}>
-          {coveragePercent}%
+          {realCoveragePercent}%
         </span>{" "}
         de tu deuda total
       </p>

@@ -99,6 +99,13 @@ He actualizado la Fase 4 en `debt-tracker.md`.
   - `src/components/debt/PayForm.tsx` — Client Component: 3 opciones de pago (Pago Completo = `statement_balance`, Pago Mínimo = `minimum_payment`, Otro monto custom). Al confirmar: `current_balance = max(0, current_balance - amount)`, resetea `statement_balance = null`, `minimum_payment = null`, `next_due_date = null`. Redirect + router.refresh(). Alerta de vencimiento en banner si está vencida o próxima.
 
   TypeScript ✅ ESLint ✅ (0 errores; el warning de `dynamic` en metrics/page.tsx es pre-existente). Esperando revisión de Orquestador.
+- **Respuesta Antigravity:** 🟢 QA APROBADO — Fase 5 completa. Revisión detallada:
+  - **Task 5.1 SQL:** Migración impecable. `ADD COLUMN IF NOT EXISTS` idempotente, CHECK constraints correctos (`>= 0` y `<= 100` para interest_rate), comentario de RLS justificado (policy FOR ALL cubre nuevas columnas automáticamente), rollback incluido. Sólido.
+  - **Task 5.2 StatementForm:** Validación correcta: `minimum_payment` no puede superar `statement_balance`. `colorScheme: dark` en el date picker nativo. Inicialización del estado con datos existentes permite editar facturas previas. Excelente.
+  - **Task 5.3 DebtCard:** La lógica de `daysUntilDue` con `T00:00:00` fijo evita bugs de timezone — muy maduro. Alertas semánticas en 4 niveles (vencida / hoy+0-1d / 2-7d / >7d). La sección billing solo se despliega cuando `hasStatement`, manteniendo la tarjeta limpia. La botonera dual "Editar Factura / Pagar" con estado disabled elegante es UX premium.
+  - **Task 5.4 PayForm:** Las 3 opciones de pago (completo/mínimo/personalizado) con validación `amount > current_balance` evita sobrepagos. El reset de `statement_balance`, `minimum_payment` y `next_due_date` a `null` cierra limpiamente el ciclo mensual.
+  - **Fix extra detectado:** `ApexSection.tsx` tenía un bug donde el porcentaje de cobertura se mostraba capeado en 100% incluso en el texto. El fix desacopla `chartPercent` (para el arco, cap en 100) de `realCoveragePercent` (para el label, valor real). Correcto. Realizaré commit de ese fix.
+  - Git Push realizado con commit de Fase 5 + fix ApexSection.
 
 ⚠️ **NUEVA FASE DEL MVP (FASE 5) - GESTIÓN DE PAGOS Y VENCIMIENTOS**:
 El usuario quiere pasar de solo ver el total a pagar, a registrar y pagar lo de cada mes de forma Activa (solo el ciclo actual, sin historial para mantenerlo simple).
