@@ -85,12 +85,27 @@ export default async function DashboardPage() {
 
         {/* Sección de deudas */}
         <section>
-          <p
-            className="text-xs font-semibold tracking-[0.2em] uppercase mb-3"
-            style={{ color: "var(--color-text-muted)" }}
-          >
-            Mis Deudas
-          </p>
+          <div className="flex items-center justify-between mb-3">
+            <p
+              className="text-xs font-semibold tracking-[0.2em] uppercase"
+              style={{ color: "var(--color-text-muted)" }}
+            >
+              Mis Deudas
+            </p>
+            <Link
+              href="/import"
+              className="text-xs font-semibold border px-3"
+              style={{
+                borderColor: "var(--color-border)",
+                color: "var(--color-text-muted)",
+                minHeight: "32px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              ↑ Importar CSV
+            </Link>
+          </div>
 
           {debtList.length === 0 ? (
             <div

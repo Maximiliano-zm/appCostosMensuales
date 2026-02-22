@@ -76,17 +76,18 @@ lib/
   - *OUTPUT*: Pantalla responsiva de captura de datos conectada a Supabase.
   - *VERIFY*: Al presionar guardar, los datos se reflejan directo en el Dashboard.
   > NOTA CLAUDE: Client Component `"use client"` en `src/app/(dashboard)/add-debt/page.tsx`. Campos: bank_name (req.), current_balance CLP (req.), original_amount CLP (opcional), foto comprobante (opcional, preview local vía FileReader). Validación client-side con mensajes de error inline. Upload de foto a bucket `debt-images` de Supabase Storage con fallback silencioso si el bucket no existe. Insert en tabla `debts`. Redirect a `/` + `router.refresh()` tras éxito. Loading state en botón (52px ámbar). Header sticky con botón "← Volver" (44px). Fix adicional: añadido `Relationships: []` a `src/types/database.ts` para compatibilidad con @supabase/postgrest-js v12. TypeScript ✅ ESLint ✅.
-- [QA] **Task 3.2**: Interfaz y lógica "Settings / Ingreso Mensual".
+- [x] **Task 3.2**: Interfaz y lógica "Settings / Ingreso Mensual".
   - *Agente/Skill*: `frontend-specialist`
   - *INPUT*: Pantalla simple para configurar o actualizar el 'Ingreso Mensual' del usuario.
   - *OUTPUT*: Guardado en la tabla `income` de Supabase asociado al User ID.
   - *VERIFY*: El Banner del Dashboard recalcula los % automáticamente.
   > NOTA CLAUDE: Server Component `src/app/(dashboard)/settings/page.tsx` hace auth + fetch del registro income existente. Pasa `existingId`, `initialAmount`, `initialNote` al Client Component `src/components/settings/IncomeForm.tsx` que maneja INSERT o UPDATE según si hay registro previo (sin UNIQUE constraint en user_id, se usa el id del registro). Botón "Editar / Configurar ›" agregado en `SummaryBanner.tsx` junto al ingreso mensual, mostrando "No configurado" si el monto es 0. Redirect a `/` + `router.refresh()` tras guardar. Touch targets ≥ 44px-52px. TypeScript ✅ ESLint ✅ sin errores.
-- [ ] **Task 3.3**: (Opcional MVP) Importador CSV/Excel básico.
+- [QA] **Task 3.3**: (Opcional MVP) Importador CSV/Excel básico.
   - *Agente/Skill*: `backend-specialist`
   - *INPUT*: Botón en el dashboard para subir un archivo pre-formateado con las deudas (plantilla CSV).
   - *OUTPUT*: Parseo local e inserción en batch a Supabase.
   - *VERIFY*: Múltiples tarjetas aparecen de inmediato en el Dashboard tras la carga.
+  > NOTA CLAUDE: Client Component en `src/app/(dashboard)/import/page.tsx`. Sin dependencias externas: parseo CSV nativo (maneja BOM de Excel, CRLF, campos con comillas). Flujo: descarga plantilla (Blob + link) → selecciona archivo → FileReader → preview tabla con validación fila a fila (banco requerido, saldo > 0, original ≥ saldo si existe) → filas inválidas se omiten con mensaje de error → botón "Importar N deudas" → batch insert a Supabase → redirect + refresh. Link "↑ Importar CSV" agregado en header de sección "Mis Deudas" del dashboard. TypeScript ✅ ESLint ✅.
 
 ## ✅ Phase X: Verification
 - [ ] **Security**: Analizar secretos o contraseñas en código duro (`checklist.py`).
