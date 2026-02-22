@@ -1,7 +1,7 @@
 # Debt Tracker MVP - Plan de Desarrollo
 
 ## 📋 Overview
-Aplicación "Mobile-First" diseñada para ayudar al usuario a regularizar sus deudas (actualmente ~3.6M CLP vs 1.3M CLP de ingresos). La característica principal es tomar capturas de pantalla de los saldos bancarios o tarjetas, extraer el valor automáticamente usando IA y actualizar el estado de la deuda en tiempo real.
+Aplicación "Mobile-First" diseñada para ayudar al usuario a regularizar sus deudas de **tarjetas de crédito** (actualmente ~3.6M CLP vs 1.3M CLP de ingresos). La característica principal es consolidar el total a pagar de múltiples tarjetas en un solo lugar y visualizar métricas de progreso para organizar los pagos.
 
 ## 🏗️ Project Type
 **WEB (Mobile-First / PWA)**: Elegimos una Web App orientada completamente a uso en teléfonos móviles.
@@ -82,12 +82,26 @@ lib/
   - *OUTPUT*: Guardado en la tabla `income` de Supabase asociado al User ID.
   - *VERIFY*: El Banner del Dashboard recalcula los % automáticamente.
   > NOTA CLAUDE: Server Component `src/app/(dashboard)/settings/page.tsx` hace auth + fetch del registro income existente. Pasa `existingId`, `initialAmount`, `initialNote` al Client Component `src/components/settings/IncomeForm.tsx` que maneja INSERT o UPDATE según si hay registro previo (sin UNIQUE constraint en user_id, se usa el id del registro). Botón "Editar / Configurar ›" agregado en `SummaryBanner.tsx` junto al ingreso mensual, mostrando "No configurado" si el monto es 0. Redirect a `/` + `router.refresh()` tras guardar. Touch targets ≥ 44px-52px. TypeScript ✅ ESLint ✅ sin errores.
-- [QA] **Task 3.3**: (Opcional MVP) Importador CSV/Excel básico.
+- [x] **Task 3.3**: (Opcional MVP) Importador CSV/Excel básico.
   - *Agente/Skill*: `backend-specialist`
   - *INPUT*: Botón en el dashboard para subir un archivo pre-formateado con las deudas (plantilla CSV).
   - *OUTPUT*: Parseo local e inserción en batch a Supabase.
   - *VERIFY*: Múltiples tarjetas aparecen de inmediato en el Dashboard tras la carga.
   > NOTA CLAUDE: Client Component en `src/app/(dashboard)/import/page.tsx`. Sin dependencias externas: parseo CSV nativo (maneja BOM de Excel, CRLF, campos con comillas). Flujo: descarga plantilla (Blob + link) → selecciona archivo → FileReader → preview tabla con validación fila a fila (banco requerido, saldo > 0, original ≥ saldo si existe) → filas inválidas se omiten con mensaje de error → botón "Importar N deudas" → batch insert a Supabase → redirect + refresh. Link "↑ Importar CSV" agregado en header de sección "Mis Deudas" del dashboard. TypeScript ✅ ESLint ✅.
+
+### Fase 4: Dashboard de Métricas Analíticas (Labs & UI Polish)
+- [ ] **Task 4.1**: Mejorar el UI/UX General del Dashboard.
+  - *Agente/Skill*: `frontend-specialist`, `frontend-design`
+  - *INPUT*: Revisar el dashboard principal y componentes actuales. Refinar estilos, sombras, espaciados y microinteracciones para que deje de verse "feo" y se sienta premium y moderno (manteniendo el tono Dark Finance).
+  - *OUTPUT*: Una interfaz significativamente más atractiva y pulida.
+- [ ] **Task 4.2**: Crear la pestaña de Métricas Integrando 5 Librerías Distintas.
+  - *Agente/Skill*: `frontend-specialist`
+  - *INPUT*: Crear `/dashboard/metrics`. Implementar gráficos usando **5 librerías distintas** (Ej: Recharts, Tremor, Chart.js/react-chartjs-2, Nivo, Visx, o ApexCharts) para comparar cuál se ve y rinde mejor en móviles.
+  - *OUTPUT*: Un dashboard "labs" con múltiples aproximaciones visuales para los mismos datos (deuda por tarjeta, % de ingresos, etc), inicialmente con datos simulados o conectados a la actual db.
+- [ ] **Task 4.3**: Flujo Real y Refinamiento (Supabase).
+  - *Agente/Skill*: `backend-specialist`
+  - *INPUT*: Recolectar `debts` e `income` del usuario y calcular métricas en tiempo real.
+  - *OUTPUT*: Todos los gráficos reflejan la realidad financiera real del usuario desde Supabase.
 
 ## ✅ Phase X: Verification
 - [ ] **Security**: Analizar secretos o contraseñas en código duro (`checklist.py`).

@@ -164,7 +164,7 @@ export default function ImportPage() {
       return;
     }
 
-    router.push("/");
+    router.push("/dashboard");
     router.refresh();
   }
 
@@ -182,7 +182,7 @@ export default function ImportPage() {
         }}
       >
         <Link
-          href="/"
+          href="/dashboard"
           className="flex items-center gap-1 text-xs font-semibold border px-3"
           style={{
             borderColor: "var(--color-border)",

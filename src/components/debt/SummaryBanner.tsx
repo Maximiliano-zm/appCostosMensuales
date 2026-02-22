@@ -69,7 +69,7 @@ export default function SummaryBanner({
               Ingreso mensual
             </p>
             <Link
-              href="/settings"
+              href="/dashboard/settings"
               className="text-xs font-semibold"
               style={{ color: "var(--color-accent)" }}
             >

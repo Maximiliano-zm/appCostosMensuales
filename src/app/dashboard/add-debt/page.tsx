@@ -127,7 +127,7 @@ export default function AddDebtPage() {
         return;
       }
 
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     } catch {
       setErrors({ general: "Ocurrió un error inesperado. Intenta de nuevo." });
@@ -150,7 +150,7 @@ export default function AddDebtPage() {
         }}
       >
         <Link
-          href="/"
+          href="/dashboard"
           className="flex items-center gap-1 text-xs font-semibold border px-3"
           style={{
             borderColor: "var(--color-border)",
@@ -218,9 +218,9 @@ export default function AddDebtPage() {
               (e.currentTarget.style.borderColor = "var(--color-accent)")
             }
             onBlur={(e) =>
-              (e.currentTarget.style.borderColor = errors.bank_name
-                ? "var(--color-danger)"
-                : "var(--color-border)")
+            (e.currentTarget.style.borderColor = errors.bank_name
+              ? "var(--color-danger)"
+              : "var(--color-border)")
             }
           />
           {errors.bank_name && (
@@ -259,9 +259,9 @@ export default function AddDebtPage() {
               (e.currentTarget.style.borderColor = "var(--color-accent)")
             }
             onBlur={(e) =>
-              (e.currentTarget.style.borderColor = errors.current_balance
-                ? "var(--color-danger)"
-                : "var(--color-border)")
+            (e.currentTarget.style.borderColor = errors.current_balance
+              ? "var(--color-danger)"
+              : "var(--color-border)")
             }
           />
           {errors.current_balance && (
@@ -303,9 +303,9 @@ export default function AddDebtPage() {
               (e.currentTarget.style.borderColor = "var(--color-accent)")
             }
             onBlur={(e) =>
-              (e.currentTarget.style.borderColor = errors.original_amount
-                ? "var(--color-danger)"
-                : "var(--color-border)")
+            (e.currentTarget.style.borderColor = errors.original_amount
+              ? "var(--color-danger)"
+              : "var(--color-border)")
             }
           />
           {errors.original_amount && (

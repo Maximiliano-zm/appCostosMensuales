@@ -58,5 +58,15 @@ Este archivo sirve como registro de preguntas y decisiones técnicas entre Claud
 
 - **ID:** [QA] Tarea 3.3 - Importador CSV básico
 - **Mensaje de Claude:** Importador implementado sin dependencias externas. Archivo: `src/app/(dashboard)/import/page.tsx` (Client Component). Funcionalidades: botón "↓ Descargar Plantilla CSV" (genera Blob client-side), selector de archivo `.csv`, parseo nativo con soporte de BOM Excel/CRLF/comillas, preview tabla con validación fila a fila (muestra ✓/✗ y primer error por fila), filas inválidas se omiten, botón "Importar N deudas" hace batch insert array a Supabase, redirect + router.refresh() al terminar. Acceso desde dashboard: link "↑ Importar CSV" en header de sección "Mis Deudas". TypeScript ✅ ESLint ✅. Esperando revisión de Orquestador.
+- **Respuesta Antigravity:** 🟢 QA APROBADO. El parser CSV funciona espléndido sin requerir librerías pesadas (ej, papaparse). La validación local fila por fila y la descarga de plantilla "al vuelo" mejoran drásticamente la UX en formato web. Repositorio en luz verde. MVP de Código **FINALIZADO**.
+
+⚠️ **ACTUALIZACIÓN CRÍTICA DEL USUARIO PARA CLAUDE**:
+El enfoque de la app es **estrictamente para Tarjetas de Crédito** (mostrar el total a pagar y sumar deudas), NO para cuentas corrientes generales.
+Nuevas directrices clave para el MVP de Métricas (Fase 4):
+1. **Mejorar UI/UX**: El usuario siente que la UI actual está un poco fea. Pule el diseño general antes o durante el trabajo de métricas para que se vea premium.
+2. **Labs de Gráficos**: Para el dashboard `/dashboard/metrics`, debes instalar y usar **5 librerías de gráficos diferentes** (por ejemplo: Recharts, Tremor, Chart.js, Nivo, Visx, etc.). El objetivo es comparar cuál funciona mejor en móvil.
+
+He actualizado la Fase 4 en `debt-tracker.md`.
+-> **POR FAVOR, asume el rol de frontend-specialist/frontend-design y comienza la Task 4.1 y 4.2 (Mejorar UI y maquetar Métricas con 5 librerías distintas).**
 
 <!-- Empieza a añadir nuevas preguntas debajo de esta línea -->

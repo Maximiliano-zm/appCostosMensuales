@@ -74,7 +74,7 @@ export default function IncomeForm({
       return;
     }
 
-    router.push("/");
+    router.push("/dashboard");
     router.refresh();
   }
 
@@ -92,7 +92,7 @@ export default function IncomeForm({
         }}
       >
         <Link
-          href="/"
+          href="/dashboard"
           className="flex items-center gap-1 text-xs font-semibold border px-3"
           style={{
             borderColor: "var(--color-border)",
@@ -167,9 +167,9 @@ export default function IncomeForm({
               (e.currentTarget.style.borderColor = "var(--color-accent)")
             }
             onBlur={(e) =>
-              (e.currentTarget.style.borderColor = error
-                ? "var(--color-danger)"
-                : "var(--color-border)")
+            (e.currentTarget.style.borderColor = error
+              ? "var(--color-danger)"
+              : "var(--color-border)")
             }
           />
           <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>

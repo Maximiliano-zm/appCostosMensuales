@@ -93,7 +93,7 @@ export default async function DashboardPage() {
               Mis Deudas
             </p>
             <Link
-              href="/import"
+              href="/dashboard/import"
               className="text-xs font-semibold border px-3"
               style={{
                 borderColor: "var(--color-border)",
@@ -138,7 +138,7 @@ export default async function DashboardPage() {
       {/* ── FAB: Agregar Deuda ──────────────────────────────────── */}
       <div className="fixed bottom-6 right-4 z-20">
         <Link
-          href="/add-debt"
+          href="/dashboard/add-debt"
           className="flex items-center gap-2 px-6 text-sm font-black border"
           style={{
             backgroundColor: "var(--color-accent)",
